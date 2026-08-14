@@ -5781,34 +5781,34 @@ echo -e "${skyblue}    ██╔══╝  ██║   ██║ ██╔██
 echo -e "${purple}    ██║     ╚██████╔╝██╔╝ ██╗       ██║   ╚██████╔╝╚██████╔╝███████╗ ${re}"
 echo -e "${white}    ╚═╝      ╚═════╝ ╚═╝  ╚═╝       ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝ ${re}"
 echo -e ""
-echo -e "    ${white}🔥 FoxToolBox v1.0${re}  ${purple}│${re}  ${white}多功能 VPS 管理工具箱${re}"
-echo -e "    ${blue}🌐 ${white}https://github.com/netjan666/FoxToolBox${re}"
+echo -e "    ${white}* FoxToolBox v1.0 ${re}${purple}|${re} ${white}多功能 VPS 管理工具箱${re}"
+echo -e "    ${blue}https://github.com/netjan666/FoxToolBox${re}"
 echo -e ""
 echo -e "    ${cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${re}"
-echo -e "    ${yellow}📊 当日运行：${white}${TODAY}次${re}    ${yellow}累计运行：${white}${TOTAL}次${re}    ${green}支持 Ubuntu / Debian / CentOS / Alpine${re}"
+echo -e "    ${yellow}当日运行：${white}${TODAY}次${re}    ${yellow}累计运行：${white}${TOTAL}次${re}    ${green}支持 Ubuntu / Debian / CentOS / Alpine${re}"
 echo -e "    ${cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${re}"
 echo -e ""
-echo -e "    ${green}┌─ 📋 系统管理 ──────────────────────────────────────────┐${re}"
-echo -e "    ${green}│${re}  ${yellow}1${re}.本机信息    ${yellow}2${re}.系统更新 ▶    ${yellow}3${re}.系统清理 ▶    ${yellow}4${re}.组件管理 ▶${re}${green}    │${re}"
-echo -e "    ${green}│${re}  ${yellow}5${re}.BBR 加速管理${re}${green}                                        │${re}"
-echo -e "    ${green}└──────────────────────────────────────────────────────────┘${re}"
 echo -e ""
-echo -e "    ${skyblue}┌─ 🐳 容器与建站 ────────────────────────────────────────┐${re}"
-echo -e "    ${skyblue}│${re}  ${yellow}6${re}.Docker 管理 ▶  ${yellow}7${re}.WARP 加速 ▶${re}${skyblue}                            │${re}"
-echo -e "    ${skyblue}│${re}  ${purple}8${re}.LDNMP 建站 ▶${re}${skyblue}                                         │${re}"
-echo -e "    ${skyblue}└──────────────────────────────────────────────────────────┘${re}"
+echo -e "    ${green}┌─ 系统管理 ───────────────────────────────────────────────────┐${re}"
+echo -e "    ${green}│${re}   ${yellow}1${re}.本机信息     ${yellow}2${re}.系统更新 >   ${yellow}3${re}.系统清理 >   ${yellow}4${re}.组件管理 >  ${green}│${re}"
+echo -e "    ${green}│${re}   ${yellow}5${re}.BBR 加速管理                                             ${green}│${re}"
+echo -e "    ${green}└──────────────────────────────────────────────────────────────┘${re}"
 echo -e ""
-echo -e "    ${blue}┌─ 🔧 工具与应用 ──────────────────────────────────────────┐${re}"
-echo -e "    ${blue}│${re}  ${yellow}9${re}.面板工具 ▶   ${yellow}10${re}.系统工具 ▶   ${yellow}11${re}.工作区 ▶${re}${blue}          │${re}"
-echo -e "    ${blue}│${re}  ${yellow}12${re}.节点搭建 ▶   ${yellow}13${re}.测试脚本 ▶   ${yellow}14${re}.甲骨文云 ▶${re}${blue}   │${re}"
-echo -e "    ${blue}│${re}  ${yellow}15${re}.环境管理 ▶   ${yellow}16${re}.开设小鸡 ▶${re}${blue}                         │${re}"
-echo -e "    ${blue}└──────────────────────────────────────────────────────────┘${re}"
+echo -e "    ${skyblue}┌─ 容器与建站 ─────────────────────────────────────────────────┐${re}"
+echo -e "    ${skyblue}│${re}   ${yellow}6${re}.Docker 管理 >   ${yellow}7${re}.WARP 加速 >   ${yellow}8${re}.LDNMP 建站 >           ${skyblue}│${re}"
+echo -e "    ${skyblue}└──────────────────────────────────────────────────────────────┘${re}"
 echo -e ""
-echo -e "    ${red}┌─ ⚡ 快捷操作 ────────────────────────────────────────────┐${re}"
-echo -e "    ${red}│${re}  ${green}00${re}.脚本更新        ${red}88${re}.退出脚本${re}${red}                             │${re}"
-echo -e "    ${red}└──────────────────────────────────────────────────────────┘${re}"
+echo -e "    ${blue}┌─ 工具与应用 ─────────────────────────────────────────────────┐${re}"
+echo -e "    ${blue}│${re}   ${yellow}9${re}.面板工具 >    ${yellow}10${re}.系统工具 >    ${yellow}11${re}.工作区 >               ${blue}│${re}"
+echo -e "    ${blue}│${re}   ${yellow}12${re}.节点搭建 >    ${yellow}13${re}.测试脚本 >    ${yellow}14${re}.甲骨文云 >            ${blue}│${re}"
+echo -e "    ${blue}│${re}   ${yellow}15${re}.环境管理 >    ${yellow}16${re}.开设小鸡 >                             ${blue}│${re}"
+echo -e "    ${blue}└──────────────────────────────────────────────────────────────┘${re}"
 echo -e ""
-read -p $'\033[1;91m    ⚡ 请输入你的选择: \033[0m' choice
+echo -e "    ${red}┌─ 快捷操作 ───────────────────────────────────────────────────┐${re}"
+echo -e "    ${red}│${re}   ${green}00${re}.脚本更新        ${red}88${re}.退出脚本                             ${red}│${re}"
+echo -e "    ${red}└──────────────────────────────────────────────────────────────┘${re}"
+echo -e ""
+read -p $'\033[1;91m    >> 请输入你的选择: \033[0m' choice
 
 case $choice in
   1)
@@ -5931,18 +5931,18 @@ case $choice in
   2)
     while true; do
       clear
-      echo -e "${skyblue}┌─ 📦 系统更新 ─────────────────────────────────────────┐${re}"
-      echo -e "${skyblue}│${re}  ${yellow}1${re}. 仅刷新软件源（apt update）${re}${skyblue}                          │${re}"
-      echo -e "${skyblue}│${re}  ${yellow}2${re}. 完整升级系统（update + upgrade）${re}${skyblue}                    │${re}"
-      echo -e "${skyblue}│${re}  ${yellow}3${re}. 仅升级安全补丁${re}${skyblue}                                     │${re}"
-      echo -e "${skyblue}│${re}  ${yellow}4${re}. 更换国内软件源（阿里云/清华）${re}${skyblue}                       │${re}"
-      echo -e "${skyblue}│${re}  ${red}0${re}. 返回主菜单${re}${skyblue}                                        │${re}"
-      echo -e "${skyblue}└──────────────────────────────────────────────────────────┘${re}"
+                  echo -e "${skyblue}┌─ 系统更新 ───────────────────────────────────────────────────┐${re}"
+      echo -e "${skyblue}│${re}   ${yellow}1${re}. 仅刷新软件源                                            ${skyblue}│${re}"
+      echo -e "${skyblue}│${re}   ${yellow}2${re}. 完整升级系统                                            ${skyblue}│${re}"
+      echo -e "${skyblue}│${re}   ${yellow}3${re}. 仅升级安全补丁                                          ${skyblue}│${re}"
+      echo -e "${skyblue}│${re}   ${yellow}4${re}. 更换国内软件源                                          ${skyblue}│${re}"
+      echo -e "${skyblue}│${re}   ${red}0${re}. 返回主菜单                                              ${skyblue}│${re}"
+      echo -e "${skyblue}└──────────────────────────────────────────────────────────────┘${re}"
       read -p $'\033[1;91m    请选择: \033[0m' sub_choice
       case $sub_choice in
         1)
           clear
-          echo -e "${yellow}▶ 正在刷新软件源...${re}"
+          echo -e "${yellow}>> 正在刷新软件源...${re}"
           if command -v apt &>/dev/null; then
             apt-get update -y
           elif command -v dnf &>/dev/null; then
@@ -5952,7 +5952,7 @@ case $choice in
           elif command -v apk &>/dev/null; then
             apk update
           fi
-          echo -e "${green}✅ 软件源刷新完成${re}"
+          echo -e "${green}[OK] 软件源刷新完成${re}"
           read -p "按回车键返回..." x
           ;;
         2)
@@ -5973,7 +5973,7 @@ case $choice in
               else
                 echo -e "${red}不支持的Linux发行版${re}"
               fi
-              echo -e "${green}✅ 系统升级完成${re}"
+              echo -e "${green}[OK] 系统升级完成${re}"
               read -p "按回车键返回..." x
               ;;
           esac
@@ -5981,22 +5981,22 @@ case $choice in
         3)
           clear
           if command -v apt &>/dev/null; then
-            echo -e "${yellow}▶ 正在升级安全补丁...${re}"
+            echo -e "${yellow}>> 正在升级安全补丁...${re}"
             DEBIAN_FRONTEND=noninteractive apt-get update -y && apt-get upgrade -y --only-upgrade $(apt list --upgradable 2>/dev/null | awk -F/ '/-security/{print $1}' | tr '\n' ' ')
           else
-            echo -e "${yellow}▶ 正在升级系统（含安全补丁）...${re}"
+            echo -e "${yellow}>> 正在升级系统（含安全补丁）...${re}"
             DEBIAN_FRONTEND=noninteractive apt-get update -y && apt-get upgrade -y
           fi
-          echo -e "${green}✅ 安全补丁升级完成${re}"
+          echo -e "${green}[OK] 安全补丁升级完成${re}"
           read -p "按回车键返回..." x
           ;;
         4)
           clear
-          echo -e "${skyblue}┌─ 更换国内软件源 ─────────────────────────────────────┐${re}"
-          echo -e "${skyblue}│${re}  ${yellow}1${re}. 阿里云源${re}${skyblue}                                          │${re}"
-          echo -e "${skyblue}│${re}  ${yellow}2${re}. 清华源${re}${skyblue}                                           │${re}"
-          echo -e "${skyblue}│${re}  ${red}0${re}. 取消${re}${skyblue}                                              │${re}"
-          echo -e "${skyblue}└──────────────────────────────────────────────────────────┘${re}"
+                              echo -e "${skyblue}┌─ 更换国内软件源 ─────────────────────────────────────────────┐${re}"
+          echo -e "${skyblue}│${re}   ${yellow}1${re}. 阿里云源                                                ${skyblue}│${re}"
+          echo -e "${skyblue}│${re}   ${yellow}2${re}. 清华源                                                  ${skyblue}│${re}"
+          echo -e "${skyblue}│${re}   ${red}0${re}. 取消                                                    ${skyblue}│${re}"
+          echo -e "${skyblue}└──────────────────────────────────────────────────────────────┘${re}"
           read -p $'\033[1;91m    请选择: \033[0m' src_choice
           if [ "$src_choice" == "1" ] || [ "$src_choice" == "2" ]; then
             if command -v apt &>/dev/null; then
@@ -6013,7 +6013,7 @@ deb http://${MIRROR}/ubuntu/ ${CODENAME}-backports main restricted universe mult
 deb http://${MIRROR}/ubuntu/ ${CODENAME}-security main restricted universe multiverse
 EOF
               apt-get update -y
-              echo -e "${green}✅ 软件源已切换 + 刷新完成${re}"
+              echo -e "${green}[OK] 软件源已切换 + 刷新完成${re}"
             else
               echo -e "${red}当前仅支持 Ubuntu/Debian 系统一键切换，可手动编辑 /etc/yum.repos.d/* 或 /etc/apk/repositories${re}"
             fi
@@ -6035,13 +6035,13 @@ EOF
   3)
     while true; do
       clear
-      echo -e "${skyblue}┌─ 🧹 系统清理 ─────────────────────────────────────────┐${re}"
-      echo -e "${skyblue}│${re}  ${yellow}1${re}. 一键清理（残留包+缓存+日志）${re}${skyblue}                       │${re}"
-      echo -e "${skyblue}│${re}  ${yellow}2${re}. 仅清理软件包缓存${re}${skyblue}                                  │${re}"
-      echo -e "${skyblue}│${re}  ${yellow}3${re}. 仅清理系统日志${re}${skyblue}                                    │${re}"
-      echo -e "${skyblue}│${re}  ${yellow}4${re}. 清理旧内核（保留当前）${re}${skyblue}                             │${re}"
-      echo -e "${skyblue}│${re}  ${red}0${re}. 返回主菜单${re}${skyblue}                                        │${re}"
-      echo -e "${skyblue}└──────────────────────────────────────────────────────────┘${re}"
+                  echo -e "${skyblue}┌─ 系统清理 ───────────────────────────────────────────────────┐${re}"
+      echo -e "${skyblue}│${re}   ${yellow}1${re}. 一键清理                                                ${skyblue}│${re}"
+      echo -e "${skyblue}│${re}   ${yellow}2${re}. 仅清理软件包缓存                                        ${skyblue}│${re}"
+      echo -e "${skyblue}│${re}   ${yellow}3${re}. 仅清理系统日志                                          ${skyblue}│${re}"
+      echo -e "${skyblue}│${re}   ${yellow}4${re}. 清理旧内核                                              ${skyblue}│${re}"
+      echo -e "${skyblue}│${re}   ${red}0${re}. 返回主菜单                                              ${skyblue}│${re}"
+      echo -e "${skyblue}└──────────────────────────────────────────────────────────────┘${re}"
       read -p $'\033[1;91m    请选择: \033[0m' sub_choice
       case $sub_choice in
         1)
@@ -6070,7 +6070,7 @@ EOF
                 journalctl --vacuum-time=1s
                 journalctl --vacuum-size=50M
               fi
-              echo -e "${green}✅ 清理完成${re}"
+              echo -e "${green}[OK] 清理完成${re}"
               read -p "按回车键返回..." x
               ;;
           esac
@@ -6087,7 +6087,7 @@ EOF
           elif command -v apk &>/dev/null; then
             apk clean
           fi
-          echo -e "${green}✅ 缓存清理完成${re}"
+          echo -e "${green}[OK] 缓存清理完成${re}"
           read -p "按回车键返回..." x
           ;;
         3)
@@ -6097,7 +6097,7 @@ EOF
           journalctl --vacuum-size=50M
           # 顺便清理 /var/log 下的旧日志文件
           find /var/log -type f -name "*.log" -mtime +7 -delete 2>/dev/null
-          echo -e "${green}✅ 日志清理完成${re}"
+          echo -e "${green}[OK] 日志清理完成${re}"
           read -p "按回车键返回..." x
           ;;
         4)
@@ -6116,7 +6116,7 @@ EOF
               elif command -v apk &>/dev/null; then
                 apk del $(apk info -vv | grep -E 'linux-[0-9]' | grep -v $(uname -r) | awk '{print $1}') -y
               fi
-              echo -e "${green}✅ 旧内核清理完成${re}"
+              echo -e "${green}[OK] 旧内核清理完成${re}"
               read -p "按回车键返回..." x
               ;;
           esac
