@@ -12,7 +12,13 @@
 
 ## 🚀 快速安装
 
-**一键运行（推荐）：**
+**一键运行（短链接版，推荐）：**
+
+```bash
+bash <(curl -Ls https://tinyurl.com/23hc2sol)
+```
+
+**完整版命令：**
 
 ```bash
 bash <(curl -Ls https://raw.githubusercontent.com/netjan666/FoxToolBox/main/fox_toolbox.sh)
@@ -38,7 +44,7 @@ k
 想用更顺口的名字，在 `~/.bashrc` 中添加：
 
 ```bash
-alias fox='bash <(curl -Ls https://raw.githubusercontent.com/netjan666/FoxToolBox/main/fox_toolbox.sh)'
+alias fox='bash <(curl -Ls https://tinyurl.com/23hc2sol)'
 ```
 
 然后执行 `source ~/.bashrc`，之后输入 `fox` 即可。
