@@ -1,5 +1,7 @@
 #!/bin/bash
 export LANG=en_US.UTF-8
+# 定义 gh_proxy 前缀，保证 raw.githubusercontent.com 资源正常拉取
+gh_proxy="https://"
 # 定义颜色
 re='\e[0m'
 red='\e[1;91m'
@@ -17,17 +19,22 @@ skyblue='\e[1;96m'
 # 创建快捷指令
 create_shortcut() {
     wrapper_content='#!/bin/bash
-# 在线获取最新脚本并执行
+# 优先在线获取最新脚本并执行，网络异常时回退到本地缓存
 SCRIPT_URL="https://raw.githubusercontent.com/netjan666/FoxToolBox/main/fox_toolbox.sh"
+CACHE_SCRIPT="/usr/local/share/fox_toolbox/fox_toolbox_cached.sh"
 TEMP_SCRIPT="/tmp/fox_toolbox_latest.sh"
+mkdir -p /usr/local/share/fox_toolbox 2>/dev/null
 
-# 下载最新脚本（屏蔽输出）
-if curl -fsSL "$SCRIPT_URL" -o "$TEMP_SCRIPT" >/dev/null 2>&1; then
+if curl -fsSL --connect-timeout 5 -m 30 "$SCRIPT_URL" -o "$TEMP_SCRIPT" >/dev/null 2>&1; then
     chmod +x "$TEMP_SCRIPT" >/dev/null 2>&1
+    cp -f "$TEMP_SCRIPT" "$CACHE_SCRIPT" >/dev/null 2>&1
     bash "$TEMP_SCRIPT" "$@"
     rm -f "$TEMP_SCRIPT" >/dev/null 2>&1
+elif [ -f "$CACHE_SCRIPT" ]; then
+    echo "在线拉取超时，正在使用本地缓存启动 FoxToolBox..."
+    bash "$CACHE_SCRIPT" "$@"
 else
-    echo "无法在线获取脚本，请检查网络连接"
+    echo "无法在线获取脚本且无本地缓存，请检查网络连接。"
     exit 1
 fi'
     
@@ -74,7 +81,7 @@ install() {
         elif command -v apk &>/dev/null; then
             apk add "$package"
         else
-            echo -e"${red}暂不支持你的系统!${re}"
+            echo -e "${red}暂不支持你的系统!${re}"
             return 1
         fi
     done
@@ -122,7 +129,7 @@ install_nodejs(){
         elif command -v dnf &>/dev/null; then
             dnf install -y nodejs npm
         elif command -v yum &>/dev/null; then
-            curl -fsSL https://rpm.nodesource.com/setup_21.x | sudo bash - && install nodejs
+            curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo bash - && install nodejs
         elif command -v apk &>/dev/null; then
             apk add nodejs npm
         else
@@ -155,12 +162,16 @@ install_java() {
 
         if command -v apt &>/dev/null; then
             apt install -y openjdk-17-jdk
+            install_status=$?
         elif command -v yum &>/dev/null; then
             yum install -y java-17-openjdk
+            install_status=$?
         elif command -v dnf &>/dev/null; then
             dnf install -y java-17-openjdk
+            install_status=$?
         elif command -v apk &>/dev/null; then
             apk add openjdk17
+            install_status=$?
         else
             echo -e "${red}暂不支持你的系统！${re}"
             exit 1
@@ -219,7 +230,7 @@ check_port() {
             echo -e "\e[1;31m端口 $PORT 已被占用，无法安装环境，卸载以下程序后重试！\e[0m"
             echo "$result"
             break_end
-            ssh_tool
+            main_menu
         fi
     else
         echo ""
@@ -4609,7 +4620,7 @@ if docker inspect "$docker_name" &>/dev/null; then
     clear
     echo "$docker_name 已安装，访问地址: "
     ip_address
-    echo "http:$ipv4_address:$docker_port"
+    echo "http://$ipv4_address:$docker_port"
     echo ""
     echo "应用操作"
     echo "------------------------"
@@ -4633,9 +4644,21 @@ if docker inspect "$docker_name" &>/dev/null; then
             # 获取外部 IP 地址
             ip_address
             echo "您可以使用以下地址访问:"
-            echo "http:$ipv4_address:$docker_port"
-            $docker_use
-            $docker_passwd
+            echo "http://$ipv4_address:$docker_port"
+            if [ -n "$docker_use" ]; then
+                if [[ "$docker_use" =~ ^(echo|docker|sleep) ]]; then
+                    eval "$docker_use" 2>/dev/null
+                else
+                    echo -e "$docker_use"
+                fi
+            fi
+            if [ -n "$docker_passwd" ]; then
+                if [[ "$docker_passwd" =~ ^(echo|docker|sleep) ]]; then
+                    eval "$docker_passwd" 2>/dev/null
+                else
+                    echo -e "$docker_passwd"
+                fi
+            fi
             ;;
         2)
             clear
@@ -4672,9 +4695,21 @@ else
             # 获取外部 IP 地址
             ip_address
             echo "您可以使用以下地址访问:"
-            echo "http:$ipv4_address:$docker_port"
-            $docker_use
-            $docker_passwd
+            echo "http://$ipv4_address:$docker_port"
+            if [ -n "$docker_use" ]; then
+                if [[ "$docker_use" =~ ^(echo|docker|sleep) ]]; then
+                    eval "$docker_use" 2>/dev/null
+                else
+                    echo -e "$docker_use"
+                fi
+            fi
+            if [ -n "$docker_passwd" ]; then
+                if [[ "$docker_passwd" =~ ^(echo|docker|sleep) ]]; then
+                    eval "$docker_passwd" 2>/dev/null
+                else
+                    echo -e "$docker_passwd"
+                fi
+            fi
             ;;
         [Nn])
             # 用户选择不安装
@@ -5122,7 +5157,7 @@ fox_docker_app_market() {
         docker_port=262
         docker_rum="docker run -d --name dosgame --restart always -p 262:262 oldiy/dosgame-web:latest"
         docker_describe="在线 DOS 老游戏合集（怀旧经典）"
-        docker_url="官网: https://github.com/rwv/dosgame-web"
+        docker_url="官网: https://hub.docker.com/r/oldiy/dosgame-web"
         docker_use=""
         docker_passwd=""
         docker_app ;;
@@ -6402,16 +6437,16 @@ EOF
       echo "------------------------"
       echo "1. 安装更新Docker环境"
       echo "------------------------"
-      echo "2. 查看Dcoker全局状态"
+      echo "2. 查看Docker全局状态"
       echo "------------------------"
-      echo "3. Dcoker容器管理 ▶"
-      echo "4. Dcoker镜像管理 ▶"
-      echo "5. Dcoker网络管理 ▶"
-      echo "6. Dcoker卷管理 ▶"
+      echo "3. Docker容器管理 ▶"
+      echo "4. Docker镜像管理 ▶"
+      echo "5. Docker网络管理 ▶"
+      echo "6. Docker卷管理 ▶"
       echo "------------------------"
       echo "7. 清理无用的docker容器和镜像网络数据卷"
       echo "------------------------"
-      echo -e "${red}8. 卸载Dcoker环境${re}"
+      echo -e "${red}8. 卸载Docker环境${re}"
       echo "------------------------"
       echo -e "${skyblue} 0. 返回主菜单${re}"
       echo "------------------------"
@@ -6426,20 +6461,20 @@ EOF
               ;;
           2)
               clear
-              echo "Dcoker版本"
+              echo "Docker版本"
               docker --version
               docker-compose --version
               echo ""
-              echo "Dcoker镜像列表"
+              echo "Docker镜像列表"
               docker image ls
               echo ""
-              echo "Dcoker容器列表"
+              echo "Docker容器列表"
               docker ps -a
               echo ""
-              echo "Dcoker卷列表"
+              echo "Docker卷列表"
               docker volume ls
               echo ""
-              echo "Dcoker网络列表"
+              echo "Docker网络列表"
               docker network ls
               echo ""
 
@@ -7091,7 +7126,7 @@ EOF
 
           6)
             docker_name="ubuntu-novnc"
-            docker_img="fredblgr/ubuntu-novnc:20.04"
+            docker_img="dorowu/ubuntu-desktop-lxde-vnc:focal"
             docker_port=6080
             rootpasswd=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16)
             docker_rum="docker run -d \
@@ -7101,9 +7136,9 @@ EOF
                                 -e HTTP_PASSWORD=$rootpasswd \
                                 -e RESOLUTION=1280x720 \
                                 --restart=always \
-                                fredblgr/ubuntu-novnc:20.04"
+                                dorowu/ubuntu-desktop-lxde-vnc:focal"
             docker_describe="一个网页版Ubuntu远程桌面，挺好用的！"
-            docker_url="官网介绍: https://hub.docker.com/r/fredblgr/ubuntu-novnc"
+            docker_url="官网介绍: https://hub.docker.com/r/dorowu/ubuntu-desktop-lxde-vnc"
             docker_use="echo \"用户名: root\""
             docker_passwd="echo \"密码: $rootpasswd\""
 
@@ -7793,8 +7828,6 @@ EOF
       echo "27. 内核参数一键调优                31. TG-bot监控预警"
       echo "28. SSH防御(fail2ban)              "
       echo "29. 病毒扫描(ClamAV)               "
-      echo "------------------------"
-      echo "80. 留言板"
       echo "------------------------"
       echo "99. 重启服务器"
       echo "------------------------"
@@ -9371,43 +9404,6 @@ EOF
             fox_tg_monitor
             ;;
 
-          80)
-            clear
-            install sshpass
-
-            remote_ip="8.8.8.8"
-            remote_user="liaotian123"
-            remote_file="/home/liaotian123/liaotian.txt"
-            password="wangYYDS"  # 替换为您的密码
-
-            clear
-            echo "留言板"
-            echo "------------------------"
-            # 显示已有的留言内容
-            sshpass -p "${password}" ssh -o StrictHostKeyChecking=no "${remote_user}@${remote_ip}" "cat '${remote_file}'"
-            echo ""
-            echo "------------------------"
-
-            # 判断是否要留言
-            read -p "是否要留言？(y/n): " leave_message
-
-            if [ "$leave_message" == "y" ] || [ "$leave_message" == "Y" ]; then
-                # 输入新的留言内容
-                read -p "输入你的昵称: " nicheng
-                read -p "输入你的聊天内容: " neirong
-
-                # 添加新留言到远程文件
-                sshpass -p "${password}" ssh -o StrictHostKeyChecking=no "${remote_user}@${remote_ip}" "echo -e '${nicheng}: ${neirong}' >> '${remote_file}'"
-                echo "已添加留言: "
-                echo "${nicheng}: ${neirong}"
-                echo ""
-            else
-                echo "您选择了不留言。"
-            fi
-
-            echo "留言板操作完成。"
-
-              ;;
 
           99)
               clear
@@ -10026,7 +10022,7 @@ EOF
               ;;
           11)
               clear
-              bash <(curl -sL bash.icu/gb5)
+              bash <(curl -sL https://yabs.sh -s -- -i)
               ;;
           12)
               clear
@@ -10291,28 +10287,8 @@ EOF
                         echo -e "${yellow}检测到你的Python3版本:${red}${VERSION}${yellow},最新版本:${green}${PY_VERSION}${re}"
                         read -p $'\033[1;91m是否确认升级最新版Python3？[y/n]: \033[0m' confirm
                         if [ "$confirm" == "y" ] || [ "$confirm" == "Y" ]; then
-                            if [[ $OS == "CentOS" ]]; then
-                                yum remove python3 -y
-                                package-cleanup --leaves
-                                package-cleanup --orphans
-                                yum autoremove -y
-                                rm-rf /usr/local/python3* >/dev/null 2>&1
-                                
-                            elif [[ $OS == "Alpine" ]]; then
-                                apk del python3
-                                apk info --installed | xargs apk info --installed -R | cut -d: -f1 | sort | uniq -c | sort -n | grep -v ' 1 ' | awk '{print $2}' | xargs apk del
-                                rm -rf /usr/lib/python3.*
-                                rm -rf /etc/python3
-                                rm -rf /var/cache/apk/*
-                                    
-                            elif [[ $OS == "Fedora" ]] || [[ $OS == "Rocky" ]] || [[ $OS == "AlmaLinux" ]] || [[ $OS == "Amazon" ]]; then
-                                dnf remove python3 -y
-                                dnf autoremove -y
-                                rm -rf ~/.local/lib/python3.*                  
-                            else
-                                apt --purge remove python3 python3-pip -y
-                                rm-rf /usr/local/python3*
-                            fi
+                            echo -e "${yellow}为保护系统包管理器(apt/dnf)安全，保留系统自带环境，仅编译安装新版 Python3 到 /usr/local/python3...${re}"
+                            rm -rf /usr/local/python3* >/dev/null 2>&1
                         else
                             echo -e "${yellow}已取消升级Python3${re}"
                             sleep 1
@@ -10364,8 +10340,9 @@ EOF
                 if [ $? -eq 0 ];then
                     rm -f /usr/local/bin/python3*
                     rm -f /usr/local/bin/pip3*
-                    ln -sf /usr/local/python3/bin/python3 /usr/bin/python3
-                    ln -sf /usr/local/python3/bin/pip3 /usr/bin/pip3
+                    ln -sf /usr/local/python3/bin/python3 /usr/local/bin/python3
+                    ln -sf /usr/local/python3/bin/pip3 /usr/local/bin/pip3
+                    hash -r 2>/dev/null
                     clear
                     echo -e "${yellow}Python3安装${green}成功，${re}版本为: ${re}${green}${PY_VERSION}${re}"
                     sleep 2
@@ -10387,7 +10364,7 @@ EOF
                     # 获取最新nodejs版本
                     install jq
                     json_data=$(curl -s https://nodejs.org/dist/index.json)
-                    latest_version=$(echo "$json_data" | jq -r '.[] | select(.lts != null) | .version' | head -n 1 | sed 's/^v//')
+                    latest_version=$(echo "$json_data" | jq -r '.[] | select(.lts != false) | .version' | head -n 1 | sed 's/^v//')
                     # echo "$latest_version"
                     if [ "$current_version" = "$latest_version" ]; then
                         echo -e "${yellow}当前版本${green}$current_version${yellow}已经是最新版${green}${latest_version}${yellow}，无需更新！${re}"
@@ -10762,7 +10739,7 @@ EOF
                         sleep 1
                         curl -L https://raw.githubusercontent.com/spiritLHLS/addswap/main/addswap.sh -o addswap.sh && chmod +x addswap.sh && bash addswap.sh
                         echo -e "${yellow}开始进行PVE主体安装${re}"
-                        curl -L https://raw.githubusercontent.com/spiritLHLS/pve/main/scripts/install_pve.sh -o install_pve.sh && chmod +x install_pve.sh && bash install_pve.sh
+                        curl -L https://raw.githubusercontent.com/oneclickvirt/pve/main/scripts/install_pve.sh -o install_pve.sh && chmod +x install_pve.sh && bash install_pve.sh
                         sleep 1
                         echo -e "${yellow}请等待20秒后重启后运行第2步${re}"
                         read -p $'\033[1;96m需要立即重启吗？ [y/n]: \033[0m' confirm
@@ -10798,13 +10775,13 @@ EOF
                 if [ "$confirm" == "y" ] || [ "$confirm" == "Y" ]; then
 
                     sleep 1
-                    curl -L https://raw.githubusercontent.com/spiritLHLS/pve/main/scripts/install_pve.sh -o install_pve.sh && chmod +x install_pve.sh && bash install_pve.sh
+                    curl -L https://raw.githubusercontent.com/oneclickvirt/pve/main/scripts/install_pve.sh -o install_pve.sh && chmod +x install_pve.sh && bash install_pve.sh
                     sleep 1
                     echo -e "${yellow}开始配置环境...${re}"
-                    bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/spiritLHLS/pve/main/scripts/build_backend.sh)
+                    bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/oneclickvirt/pve/main/scripts/build_backend.sh)
                     sleep 1
                     echo -e "${yellow}开始自动配置宿主机的网关...${re}"
-                    bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/spiritLHLS/pve/main/scripts/build_nat_network.sh)
+                    bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/oneclickvirt/pve/main/scripts/build_nat_network.sh)
                     sleep 1
                     echo -e "${yellow}KVM虚拟化开设出的虚拟机，默认生成的用户名不是root，请确保你已在root下运行及修改root密码${re}"
 
@@ -10813,7 +10790,7 @@ EOF
 
                         if [ "$choose" == "1" ]; then
                             sleep 1
-                            curl -L https://raw.githubusercontent.com/spiritLHLS/pve/main/scripts/buildvm.sh -o buildvm.sh && chmod +x buildvm.sh
+                            curl -L https://raw.githubusercontent.com/oneclickvirt/pve/main/scripts/buildvm.sh -o buildvm.sh && chmod +x buildvm.sh
                             sleep 2
                             echo -e "${purple}手动开设请执行以下命令，参数对照如下可自行修改${re}"
                             echo ""
@@ -10826,7 +10803,7 @@ EOF
                             sleep 1
                             echo -e "${red}注意: KVM开设出的NAT小鸡，默认生成的用户名不是root，默认的root密码部分类型是${green}password${red},需要sudo -i手动切换为root${re}"
                             sleep 2
-                            curl -L https://raw.githubusercontent.com/spiritLHLS/pve/main/scripts/create_vm.sh -o create_vm.sh && chmod +x create_vm.sh && bash create_vm.sh
+                            curl -L https://raw.githubusercontent.com/oneclickvirt/pve/main/scripts/create_vm.sh -o create_vm.sh && chmod +x create_vm.sh && bash create_vm.sh
                             sleep 2
                             break_end
                             break  # 跳出循环
@@ -11138,7 +11115,7 @@ EOF
                 curl -L https://raw.githubusercontent.com/spiritLHLS/addswap/main/addswap.sh -o addswap.sh && chmod +x addswap.sh && bash addswap.sh
                 sleep 1
                 echo -e "${yellow}开始安装docker配置环境${re}"
-                curl -L https://raw.githubusercontent.com/spiritLHLS/docker/main/scripts/dockerinstall.sh -o dockerinstall.sh && chmod +x dockerinstall.sh && bash dockerinstall.sh
+                curl -L https://raw.githubusercontent.com/oneclickvirt/docker/main/scripts/dockerinstall.sh -o dockerinstall.sh && chmod +x dockerinstall.sh && bash dockerinstall.sh
                 sleep 2
 
                 while true; do
@@ -11147,13 +11124,13 @@ EOF
                     if [ "$choose" == "1" ]; then
                         sleep 1
                         install screen
-                        curl -L https://raw.githubusercontent.com/spiritLHLS/docker/main/scripts/onedocker.sh -o onedocker.sh && chmod +x onedocker.sh && screen bash onedocker.sh
+                        curl -L https://raw.githubusercontent.com/oneclickvirt/docker/main/scripts/onedocker.sh -o onedocker.sh && chmod +x onedocker.sh && screen bash onedocker.sh
                         sleep 2
                         break_end
                         break  # 跳出循环
                     elif [ "$choose" == "2" ]; then
                         sleep 1
-                        curl -L https://raw.githubusercontent.com/spiritLHLS/docker/main/scripts/create_docker.sh -o create_docker.sh && chmod +x create_docker.sh && screen bash create_docker.sh
+                        curl -L https://raw.githubusercontent.com/oneclickvirt/docker/main/scripts/create_docker.sh -o create_docker.sh && chmod +x create_docker.sh && screen bash create_docker.sh
                         sleep 2
                         break_end
                         break  # 跳出循环
@@ -11451,13 +11428,24 @@ EOF
     ;; 
 
   00)
-    cd ~
-    curl -sS -O https://raw.githubusercontent.com/eooce/ssh_tool/main/update_log.sh && chmod +x update_log.sh && ./update_log.sh
-    rm update_log.sh
-    echo ""
-    echo -e "${green}脚本已更新到最新版本！${re}"
-    sleep 1
-    main_menu
+    clear
+    echo -e "${yellow}正在检查并更新 FoxToolBox...${re}"
+    UPDATE_URL="https://raw.githubusercontent.com/netjan666/FoxToolBox/main/fox_toolbox.sh"
+    TARGET_PATH="/usr/local/bin/fox_toolbox.sh"
+    CACHE_PATH="/usr/local/share/fox_toolbox/fox_toolbox_cached.sh"
+    mkdir -p /usr/local/share/fox_toolbox 2>/dev/null
+    if curl -fsSL "$UPDATE_URL" -o "/tmp/fox_toolbox_update.sh"; then
+        chmod +x "/tmp/fox_toolbox_update.sh"
+        cp -f "/tmp/fox_toolbox_update.sh" "$CACHE_PATH" 2>/dev/null
+        mv -f "/tmp/fox_toolbox_update.sh" "$TARGET_PATH"
+        echo -e "${green}FoxToolBox 已成功更新到最新版本！${re}"
+        sleep 1
+        exec bash "$TARGET_PATH"
+    else
+        echo -e "${red}更新失败，请检查网络连接！${re}"
+        sleep 2
+        main_menu
+    fi
     ;;
 
   88)
